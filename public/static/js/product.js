@@ -106,53 +106,99 @@ function loadProductDetails(productId) {
     }
 }
 
+// 加载商品详情
+async function loadProductDetails(productId) {
+  try {
+    // 从API获取商品详情
+    const response = await fetch(`https://api.pengbo.qzz.io/api/products/${productId}`);
+    const data = await response.json();
+    
+    if (data.success) {
+      const product = data.data;
+      
+      // 更新页面内容
+      document.getElementById('breadcrumb-product').textContent = product.name;
+      document.getElementById('main-product-image').src = product.image || 'static/images/product1.jpg';
+      document.getElementById('product-name').textContent = product.name;
+      document.getElementById('product-price').textContent = product.price.toFixed(2);
+      document.getElementById('product-stock').textContent = product.stock || 0;
+      document.getElementById('product-description').textContent = product.description || '';
+      document.getElementById('details-content').textContent = product.details || '';
+      
+      // 更新购买链接
+      const buyButton = document.querySelector('.product-actions .btn-primary');
+      buyButton.href = `checkout.html?productId=${product.id}`;
+      
+      // 渲染商品特点
+      const featuresList = document.getElementById('product-features');
+      if (featuresList && product.features) {
+        featuresList.innerHTML = '';
+        product.features.forEach(feature => {
+          const li = document.createElement('li');
+          li.textContent = feature;
+          featuresList.appendChild(li);
+        });
+      }
+    } else {
+      // 商品不存在，显示错误信息
+      document.querySelector('.product-container').innerHTML = `
+        <div class="error-message">
+          <h2>商品不存在</h2>
+          <p>您访问的商品可能已下架或ID错误。</p>
+          <a href="index.html#products" class="btn btn-primary">返回商品列表</a>
+        </div>
+      `;
+    }
+  } catch (error) {
+    console.error('Load product details error:', error);
+    document.querySelector('.product-container').innerHTML = `
+      <div class="error-message">
+        <h2>加载失败</h2>
+        <p>无法加载商品信息，请稍后重试。</p>
+        <a href="index.html#products" class="btn btn-primary">返回商品列表</a>
+      </div>
+    `;
+  }
+}
+
 // 加载相关商品
-function loadRelatedProducts(currentProductId) {
-    const relatedGrid = document.getElementById('related-products-grid');
-
-    // 模拟相关商品数据（实际应用中应从API获取）
-    const relatedProducts = [
-        {
-            id: 4,
-            name: "YouTube Premium 1个月",
-            price: 18.00,
-            image: "static/images/product1.jpg"
-        },
-        {
-            id: 5,
-            name: "Disney+ 1个月会员",
-            price: 22.00,
-            image: "static/images/product2.jpg"
-        },
-        {
-            id: 6,
-            name: "Steam 100元礼品卡",
-            price: 95.00,
-            image: "static/images/product3.jpg"
-        }
-    ];
-
-    // 渲染相关商品
-    relatedProducts.forEach(product => {
+async function loadRelatedProducts(currentProductId) {
+  const relatedGrid = document.getElementById('related-products-grid');
+  
+  try {
+    // 从API获取相关商品（这里使用相同的商品列表作为示例）
+    const response = await fetch('https://api.pengbo.qzz.io/api/products');
+    const data = await response.json();
+    
+    if (data.success) {
+      // 过滤掉当前商品，只显示其他商品
+      const relatedProducts = data.data.products.filter(p => p.id !== parseInt(currentProductId)).slice(0, 3);
+      
+      relatedGrid.innerHTML = '';
+      relatedProducts.forEach(product => {
         const productCard = document.createElement('div');
         productCard.className = 'product-card';
         productCard.innerHTML = `
-            <div class="product-image">
-                <img src="${product.image}" alt="${product.name}">
+          <div class="product-image">
+            <img src="${product.image || 'static/images/product1.jpg'}" alt="${product.name}">
+          </div>
+          <div class="product-info">
+            <h3>${product.name}</h3>
+            <div class="product-price">
+              <span class="price">¥${product.price.toFixed(2)}</span>
             </div>
-            <div class="product-info">
-                <h3>${product.name}</h3>
-                <div class="product-price">
-                    <span class="price">¥${product.price.toFixed(2)}</span>
-                </div>
-                <div class="product-actions">
-                    <a href="checkout.html?productId=${product.id}" class="btn btn-primary">立即购买</a>
-                    <a href="product.html?id=${product.id}" class="btn btn-outline">详情</a>
-                </div>
+            <div class="product-actions">
+              <a href="checkout.html?productId=${product.id}" class="btn btn-primary">立即购买</a>
+              <a href="product.html?id=${product.id}" class="btn btn-outline">详情</a>
             </div>
+          </div>
         `;
         relatedGrid.appendChild(productCard);
-    });
+      });
+    }
+  } catch (error) {
+    console.error('Load related products error:', error);
+  }
 }
 
 // 初始化标签页功能
