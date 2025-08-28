@@ -118,103 +118,81 @@ async function initDashboard() {
 }
 
 
-// 加载仪表盘统计数据
-function loadDashboardStats() {
-    // 模拟统计数据（实际应用中应从API获取）
-    const stats = {
-        totalProducts: 12,
-        todayOrders: 8,
-        todayRevenue: 320.50,
-        totalCards: 450
-    };
-
-    document.getElementById('total-products').textContent = stats.totalProducts;
-    document.getElementById('today-orders').textContent = stats.todayOrders;
-    document.getElementById('today-revenue').textContent = `¥${stats.todayRevenue.toFixed(2)}`;
-    document.getElementById('total-cards').textContent = stats.totalCards;
-}
-
 // 加载待处理订单
-function loadPendingOrders() {
+async function loadPendingOrders() {
     const pendingOrdersTable = document.getElementById('pending-orders');
 
-    // 模拟待处理订单数据（实际应用中应从API获取）
-    const pendingOrders = [
-        {
-            id: 123459,
-            productName: "Netflix 1个月会员",
-            amount: 25.00,
-            status: "PAID"
-        },
-        {
-            id: 123460,
-            productName: "Spotify 1个月会员",
-            amount: 15.00,
-            status: "CONFIRMED_PAYMENT"
-        }
-    ];
+    try {
+        const response = await fetch('https://api.pengbo.qzz.io/api/admin/orders?status=PAID', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
+            }
+        });
+        const data = await response.json();
 
-    pendingOrdersTable.innerHTML = '';
+        if (data.success) {
+            pendingOrdersTable.innerHTML = '';
 
-    pendingOrders.forEach(order => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${order.id}</td>
-            <td>${order.productName}</td>
-            <td>¥${order.amount.toFixed(2)}</td>
-            <td><span class="status ${order.status.toLowerCase()}">${getStatusText(order.status)}</span></td>
-            <td>
-                ${order.status === 'PAID' ?
-            `<button class="action-btn btn-success" onclick="confirmPayment(${order.id})">确认收款</button>` :
-            `<button class="action-btn btn-primary" onclick="confirmDelivery(${order.id})">确认发货</button>`
-        }
-            </td>
+            data.data.orders.forEach(order => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+          <td>${order.id}</td>
+          <td>${order.product_name}</td>
+          <td>¥${order.amount.toFixed(2)}</td>
+          <td><span class="status ${order.status.toLowerCase()}">${getStatusText(order.status)}</span></td>
+          <td>
+            <button class="action-btn btn-success" onclick="confirmPayment(${order.id})">确认收款</button>
+          </td>
         `;
-        pendingOrdersTable.appendChild(row);
-    });
+                pendingOrdersTable.appendChild(row);
+            });
+        }
+    } catch (error) {
+        console.error('Load pending orders error:', error);
+    }
 }
 
 // 加载库存不足商品
-function loadLowStockProducts() {
+async function loadLowStockProducts() {
     const lowStockTable = document.getElementById('low-stock-products');
 
-    // 模拟库存不足商品数据（实际应用中应从API获取）
-    const lowStockProducts = [
-        {
-            id: 1,
-            name: "Netflix 1个月会员",
-            stock: 5
-        },
-        {
-            id: 3,
-            name: "Adobe Creative Cloud 1个月",
-            stock: 3
-        }
-    ];
+    try {
+        const response = await fetch('https://api.pengbo.qzz.io/api/products', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
+            }
+        });
+        const data = await response.json();
 
-    lowStockTable.innerHTML = '';
+        if (data.success) {
+            const lowStockProducts = data.data.products.filter(p => p.stock < 10);
 
-    lowStockProducts.forEach(product => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${product.name}</td>
-            <td>${product.stock}</td>
-            <td>
-                <a href="products.html" class="action-btn btn-primary">管理库存</a>
-            </td>
+            lowStockTable.innerHTML = '';
+            lowStockProducts.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+          <td>${product.name}</td>
+          <td>${product.stock}</td>
+          <td>
+            <a href="products.html" class="action-btn btn-primary">管理库存</a>
+          </td>
         `;
-        lowStockTable.appendChild(row);
-    });
+                lowStockTable.appendChild(row);
+            });
+        }
+    } catch (error) {
+        console.error('Load low stock products error:', error);
+    }
 }
 
 // 初始化商品管理页面
-function initProductsPage() {
+async function initProductsPage() {
     // 更新管理员用户名
     const adminUsername = localStorage.getItem('adminUsername') || 'admin';
     document.getElementById('admin-username').textContent = adminUsername;
 
     // 加载商品列表
-    loadProducts();
+    await loadProducts();
 
     // 初始化添加商品按钮
     const addProductBtn = document.getElementById('add-product-btn');
@@ -223,84 +201,46 @@ function initProductsPage() {
             showProductModal();
         });
     }
-
-    // 初始化商品表单
-    const productForm = document.getElementById('product-form');
-    if (productForm) {
-        productForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            saveProduct();
-        });
-    }
-
-    // 初始化模态框关闭按钮
-    const cancelBtn = document.querySelector('#product-modal .cancel-btn');
-    if (cancelBtn) {
-        cancelBtn.addEventListener('click', function() {
-            closeProductModal();
-        });
-    }
 }
+
 
 // 加载商品列表
-function loadProducts() {
+async function loadProducts() {
     const productsTable = document.getElementById('products-tbody');
 
-    // 模拟商品数据（实际应用中应从API获取）
-    const products = [
-        {
-            id: 1,
-            name: "Netflix 1个月会员",
-            description: "全球最受欢迎的流媒体服务",
-            price: 25.00,
-            stock: 50,
-            category: "视频会员",
-            isActive: true,
-            createdAt: "2023-06-01T10:00:00Z"
-        },
-        {
-            id: 2,
-            name: "Spotify 1个月会员",
-            description: "全球领先的音乐流媒体服务",
-            price: 15.00,
-            stock: 100,
-            category: "音乐会员",
-            isActive: true,
-            createdAt: "2023-06-02T10:00:00Z"
-        },
-        {
-            id: 3,
-            name: "Adobe Creative Cloud 1个月",
-            description: "专业创意设计软件套装",
-            price: 80.00,
-            stock: 30,
-            category: "设计软件",
-            isActive: true,
-            createdAt: "2023-06-03T10:00:00Z"
-        }
-    ];
+    try {
+        const response = await fetch('https://api.pengbo.qzz.io/api/admin/products', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
+            }
+        });
+        const data = await response.json();
 
-    productsTable.innerHTML = '';
+        if (data.success) {
+            productsTable.innerHTML = '';
 
-    products.forEach(product => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${product.id}</td>
-            <td>${product.name}</td>
-            <td>${product.description}</td>
-            <td>¥${product.price.toFixed(2)}</td>
-            <td>${product.stock}</td>
-            <td>${product.isActive ? '启用' : '禁用'}</td>
-            <td>${new Date(product.createdAt).toLocaleDateString()}</td>
-            <td>
-                <button class="action-btn btn-primary" onclick="editProduct(${product.id})">编辑</button>
-                <button class="action-btn btn-danger" onclick="deleteProduct(${product.id})">删除</button>
-            </td>
+            data.data.products.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+          <td>${product.id}</td>
+          <td>${product.name}</td>
+          <td>${product.description || ''}</td>
+          <td>¥${product.price.toFixed(2)}</td>
+          <td>${product.stock}</td>
+          <td>${product.is_active ? '启用' : '禁用'}</td>
+          <td>${new Date(product.created_at).toLocaleDateString()}</td>
+          <td>
+            <button class="action-btn btn-primary" onclick="editProduct(${product.id})">编辑</button>
+            <button class="action-btn btn-danger" onclick="deleteProduct(${product.id})">删除</button>
+          </td>
         `;
-        productsTable.appendChild(row);
-    });
+                productsTable.appendChild(row);
+            });
+        }
+    } catch (error) {
+        console.error('Load products error:', error);
+    }
 }
-
 // 显示商品模态框
 function showProductModal(product = null) {
     const modal = document.getElementById('product-modal');
@@ -389,13 +329,13 @@ function deleteProduct(productId) {
 }
 
 // 初始化订单管理页面
-function initOrdersPage() {
+async function initOrdersPage() {
     // 更新管理员用户名
     const adminUsername = localStorage.getItem('adminUsername') || 'admin';
     document.getElementById('admin-username').textContent = adminUsername;
 
     // 加载订单列表
-    loadOrders();
+    await loadOrders();
 
     // 初始化搜索和筛选
     const searchBtn = document.getElementById('search-btn');
@@ -412,6 +352,7 @@ function initOrdersPage() {
             loadOrders();
         });
     }
+}
 
     // 初始化确认收款模态框
     const confirmPaymentBtn = document.getElementById('confirm-payment-btn');
@@ -437,106 +378,72 @@ function initOrdersPage() {
     });
 }
 
+
 // 加载订单列表
-function loadOrders() {
+async function loadOrders() {
     const ordersTable = document.getElementById('orders-tbody');
     const statusFilter = document.getElementById('status-filter').value;
     const searchInput = document.getElementById('search-input').value;
 
-    // 模拟订单数据（实际应用中应从API获取）
-    let orders = [
-        {
-            id: 123456,
-            username: "user123",
-            productName: "Netflix 1个月会员",
-            amount: 25.00,
-            paymentMethod: "wechat",
-            status: "PENDING_PAYMENT",
-            createdAt: "2023-06-15T10:30:00Z"
-        },
-        {
-            id: 123457,
-            username: "user456",
-            productName: "Spotify 1个月会员",
-            amount: 15.00,
-            paymentMethod: "usdt",
-            status: "PAID",
-            createdAt: "2023-06-14T15:45:00Z"
-        },
-        {
-            id: 123458,
-            username: "user789",
-            productName: "Adobe Creative Cloud 1个月",
-            amount: 80.00,
-            paymentMethod: "wechat",
-            status: "CONFIRMED_PAYMENT",
-            createdAt: "2023-06-13T09:20:00Z"
-        },
-        {
-            id: 123459,
-            username: "user101",
-            productName: "YouTube Premium 1个月",
-            amount: 18.00,
-            paymentMethod: "wechat",
-            status: "COMPLETED",
-            createdAt: "2023-06-12T14:10:00Z"
-        }
-    ];
+    try {
+        let url = 'https://api.pengbo.qzz.io/api/admin/orders?';
+        const params = new URLSearchParams();
 
-    // 应用筛选
-    if (statusFilter) {
-        orders = orders.filter(order => order.status === statusFilter);
-    }
+        if (statusFilter) params.append('status', statusFilter);
+        if (searchInput) params.append('search', searchInput);
 
-    // 应用搜索
-    if (searchInput) {
-        orders = orders.filter(order =>
-            order.id.toString().includes(searchInput) ||
-            order.productName.toLowerCase().includes(searchInput.toLowerCase())
-        );
-    }
+        const response = await fetch(url + params.toString(), {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
+            }
+        });
+        const data = await response.json();
 
-    ordersTable.innerHTML = '';
+        if (data.success) {
+            ordersTable.innerHTML = '';
 
-    orders.forEach(order => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${order.id}</td>
-            <td>${order.username}</td>
-            <td>${order.productName}</td>
-            <td>¥${order.amount.toFixed(2)}</td>
-            <td>${order.paymentMethod === 'wechat' ? '微信' : 'USDT'}</td>
-            <td><span class="status ${order.status.toLowerCase()}">${getStatusText(order.status)}</span></td>
-            <td>${new Date(order.createdAt).toLocaleString()}</td>
-            <td>
-                ${order.status === 'PAID' ?
-            `<button class="action-btn btn-success confirm-payment-btn" data-id="${order.id}">确认收款</button>` :
-            order.status === 'CONFIRMED_PAYMENT' ?
-                `<button class="action-btn btn-primary confirm-delivery-btn" data-id="${order.id}">确认发货</button>` :
-                '-'
-        }
-            </td>
+            data.data.orders.forEach(order => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+          <td>${order.id}</td>
+          <td>${order.username || '游客'}</td>
+          <td>${order.product_name}</td>
+          <td>¥${order.amount.toFixed(2)}</td>
+          <td>${order.payment_method === 'wechat' ? '微信' : 'USDT'}</td>
+          <td><span class="status ${order.status.toLowerCase()}">${getStatusText(order.status)}</span></td>
+          <td>${new Date(order.created_at).toLocaleString()}</td>
+          <td>
+            ${order.status === 'PAID' ?
+                    `<button class="action-btn btn-success confirm-payment-btn" data-id="${order.id}">确认收款</button>` :
+                    order.status === 'CONFIRMED_PAYMENT' ?
+                        `<button class="action-btn btn-primary confirm-delivery-btn" data-id="${order.id}">确认发货</button>` :
+                        '-'
+                }
+          </td>
         `;
-        ordersTable.appendChild(row);
-    });
+                ordersTable.appendChild(row);
+            });
 
-    // 重新绑定确认收款按钮事件
-    document.querySelectorAll('.confirm-payment-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const orderId = this.getAttribute('data-id');
-            showConfirmPaymentModal(orderId);
-        });
-    });
+            // 重新绑定确认收款按钮事件
+            document.querySelectorAll('.confirm-payment-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const orderId = this.getAttribute('data-id');
+                    showConfirmPaymentModal(orderId);
+                });
+            });
 
-    // 重新绑定确认发货按钮事件
-    document.querySelectorAll('.confirm-delivery-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const orderId = this.getAttribute('data-id');
-            showConfirmDeliveryModal(orderId);
-        });
-    });
+            // 重新绑定确认发货按钮事件
+            document.querySelectorAll('.confirm-delivery-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const orderId = this.getAttribute('data-id');
+                    showConfirmDeliveryModal(orderId);
+                });
+            });
+        }
+    } catch (error) {
+        console.error('Load orders error:', error);
+    }
 }
-
 // 显示确认收款模态框
 function showConfirmPaymentModal(orderId) {
     const modal = document.getElementById('confirm-payment-modal');
@@ -565,41 +472,57 @@ function showConfirmDeliveryModal(orderId) {
 }
 
 // 确认收款
-function confirmPayment() {
-    const orderId = document.getElementById('modal-order-id').textContent;
+async function confirmPayment(orderId) {
     const transactionId = document.getElementById('transaction-id').value;
 
-    // 模拟确认收款操作（实际应用中应发送到API）
-    console.log('确认收款:', orderId, transactionId);
+    try {
+        const response = await fetch(`https://api.pengbo.qzz.io/api/admin/orders/${orderId}/confirm-payment`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
+            },
+            body: JSON.stringify({ transactionId })
+        });
 
-    // 显示成功消息
-    alert('确认收款成功！');
+        const data = await response.json();
 
-    // 关闭模态框
-    document.getElementById('confirm-payment-modal').classList.remove('show');
-
-    // 重新加载订单列表
-    loadOrders();
+        if (data.success) {
+            alert('确认收款成功！');
+            document.getElementById('confirm-payment-modal').style.display = 'none';
+            loadOrders();
+        } else {
+            alert('确认收款失败: ' + data.error);
+        }
+    } catch (error) {
+        console.error('Confirm payment error:', error);
+        alert('确认收款失败: ' + error.message);
+    }
 }
 
 // 确认发货
-function confirmDelivery() {
-    const orderId = document.getElementById('modal-delivery-order-id').textContent;
+async function confirmDelivery(orderId) {
+    try {
+        const response = await fetch(`https://api.pengbo.qzz.io/api/admin/orders/${orderId}/confirm-delivery`, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
+            }
+        });
 
-    // 模拟确认发货操作（实际应用中应发送到API）
-    console.log('确认发货:', orderId);
+        const data = await response.json();
 
-    // 模拟分配卡密
-    const cardKey = 'MOCK-CARD-KEY-' + Math.random().toString(36).substr(2, 9).toUpperCase();
-
-    // 显示成功消息
-    alert(`确认发货成功！卡密: ${cardKey}`);
-
-    // 关闭模态框
-    document.getElementById('confirm-delivery-modal').classList.remove('show');
-
-    // 重新加载订单列表
-    loadOrders();
+        if (data.success) {
+            alert('确认发货成功！卡密: ' + data.data.cardKey);
+            document.getElementById('confirm-delivery-modal').style.display = 'none';
+            loadOrders();
+        } else {
+            alert('确认发货失败: ' + data.error);
+        }
+    } catch (error) {
+        console.error('Confirm delivery error:', error);
+        alert('确认发货失败: ' + error.message);
+    }
 }
 
 // 初始化卡密管理页面
@@ -960,6 +883,7 @@ function initLogout() {
         });
     }
 }
+
 
 // 辅助函数：获取订单状态文本
 function getStatusText(status) {
