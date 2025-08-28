@@ -78,20 +78,45 @@ function initLoginPage() {
 }
 
 // 初始化仪表盘
-function initDashboard() {
+async function initDashboard() {
     // 更新管理员用户名
     const adminUsername = localStorage.getItem('adminUsername') || 'admin';
     document.getElementById('admin-username').textContent = adminUsername;
 
-    // 加载统计数据
-    loadDashboardStats();
+    try {
+        // 从API获取仪表盘数据
+        const response = await fetch('https://api.pengbo.qzz.io/api/admin/dashboard', {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
+            }
+        });
+        const data = await response.json();
 
-    // 加载待处理订单
-    loadPendingOrders();
+        if (data.success) {
+            const stats = data.data;
 
-    // 加载库存不足商品
-    loadLowStockProducts();
+            // 更新统计数据
+            document.getElementById('total-products').textContent = stats.totalProducts;
+            document.getElementById('today-orders').textContent = stats.todayOrders;
+            document.getElementById('today-revenue').textContent = `¥${stats.todayRevenue.toFixed(2)}`;
+            document.getElementById('total-cards').textContent = stats.totalCards;
+        } else {
+            console.error('Load dashboard error:', data.error);
+        }
+
+        // 加载待处理订单
+        await loadPendingOrders();
+
+        // 加载库存不足商品
+        await loadLowStockProducts();
+    } catch (error) {
+        console.error('Init dashboard error:', error);
+        // 如果token无效，跳转到登录页
+        localStorage.removeItem('adminToken');
+        window.location.href = 'login.html';
+    }
 }
+
 
 // 加载仪表盘统计数据
 function loadDashboardStats() {
