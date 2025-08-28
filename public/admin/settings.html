@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统设置 - 卡密商城</title>
+    <link rel="stylesheet" href="../static/css/admin.css">
+    <link rel="icon" href="../static/images/logo.png" type="image/png">
+</head>
+<body>
+<div class="admin-container">
+    <div class="sidebar">
+        <div class="logo">
+            <img src="../static/images/logo.png" alt="卡密商城">
+            <h2>卡密管理</h2>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="index.html">仪表盘</a></li>
+            <li><a href="products.html">商品管理</a></li>
+            <li><a href="orders.html">订单管理</a></li>
+            <li><a href="cards.html">卡密管理</a></li>
+            <li class="active"><a href="settings.html">系统设置</a></li>
+            <li><a href="#" id="logout">退出登录</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <header class="header">
+            <h1>系统设置</h1>
+            <div class="user-info">
+                <span>管理员: <span id="admin-username">admin</span></span>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="settings-tabs">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="payment">支付设置</button>
+                    <button class="tab-btn" data-tab="site">网站设置</button>
+                    <button class="tab-btn" data-tab="admin">管理员</button>
+                </div>
+
+                <div class="tabs-content">
+                    <div class="tab-pane active" id="payment">
+                        <h2>支付设置</h2>
+                        <form id="payment-form">
+                            <div class="form-group">
+                                <label>微信收款二维码</label>
+                                <div class="qr-upload">
+                                    <img id="wechat-qr-preview" src="../qr-codes/wechat.png" alt="微信收款码">
+                                    <input type="file" id="wechat-qr-upload" accept="image/*">
+                                    <button type="button" class="btn btn-outline">更换二维码</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>USDT收款二维码</label>
+                                <div class="qr-upload">
+                                    <img id="usdt-qr-preview" src="../qr-codes/usdt.png" alt="USDT收款码">
+                                    <input type="file" id="usdt-qr-upload" accept="image/*">
+                                    <button type="button" class="btn btn-outline">更换二维码</button>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">保存设置</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane" id="site">
+                        <h2>网站设置</h2>
+                        <form id="site-form">
+                            <div class="form-group">
+                                <label for="site-name">网站名称</label>
+                                <input type="text" id="site-name" value="卡密商城">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="site-description">网站描述</label>
+                                <textarea id="site-description">专业的卡密自动发货平台，支持微信、USDT支付，快速发货</textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="site-keywords">网站关键词</label>
+                                <input type="text" id="site-keywords" value="卡密,自动发货,微信支付,USDT支付">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contact-telegram">Telegram客服</label>
+                                <input type="text" id="contact-telegram" value="@cardsupport">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contact-email">联系邮箱</label>
+                                <input type="email" id="contact-email" value="support@cardshop.com">
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">保存设置</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane" id="admin">
+                        <h2>管理员设置</h2>
+                        <div class="admin-list">
+                            <div class="admin-item">
+                                <div class="admin-info">
+                                    <h3>admin</h3>
+                                    <p>超级管理员</p>
+                                </div>
+                                <div class="admin-actions">
+                                    <button class="btn btn-outline">修改密码</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="add-admin">
+                            <h3>添加管理员</h3>
+                            <form id="add-admin-form">
+                                <div class="form-group">
+                                    <label for="new-admin-username">用户名</label>
+                                    <input type="text" id="new-admin-username" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="new-admin-password">密码</label>
+                                    <input type="password" id="new-admin-password" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="new-admin-role">角色</label>
+                                    <select id="new-admin-role">
+                                        <option value="admin">管理员</option>
+                                        <option value="operator">操作员</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">添加管理员</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../static/js/admin.js"></script>
+</body>
+</html>

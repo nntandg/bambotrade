@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理后台 - 卡密商城</title>
+    <link rel="stylesheet" href="../static/css/admin.css">
+    <link rel="icon" href="../static/images/logo.png" type="image/png">
+</head>
+<body>
+<div class="admin-container">
+    <div class="sidebar">
+        <div class="logo">
+            <img src="../static/images/logo.png" alt="卡密商城">
+            <h2>卡密管理</h2>
+        </div>
+        <ul class="nav-menu">
+            <li class="active"><a href="index.html">仪表盘</a></li>
+            <li><a href="products.html">商品管理</a></li>
+            <li><a href="orders.html">订单管理</a></li>
+            <li><a href="cards.html">卡密管理</a></li>
+            <li><a href="settings.html">系统设置</a></li>
+            <li><a href="#" id="logout">退出登录</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <header class="header">
+            <h1>仪表盘</h1>
+            <div class="user-info">
+                <span>管理员: <span id="admin-username">admin</span></span>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📦</div>
+                    <div class="stat-info">
+                        <h3>商品总数</h3>
+                        <p class="stat-value" id="total-products">0</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">📋</div>
+                    <div class="stat-info">
+                        <h3>今日订单</h3>
+                        <p class="stat-value" id="today-orders">0</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-info">
+                        <h3>今日收入</h3>
+                        <p class="stat-value" id="today-revenue">¥0.00</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">🔑</div>
+                    <div class="stat-info">
+                        <h3>卡密库存</h3>
+                        <p class="stat-value" id="total-cards">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-sections">
+                <div class="section">
+                    <h2>待处理订单</h2>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                            <tr>
+                                <th>订单号</th>
+                                <th>商品</th>
+                                <th>金额</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="pending-orders">
+                            <!-- 待处理订单将通过JavaScript填充 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>库存不足商品</h2>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                            <tr>
+                                <th>商品名称</th>
+                                <th>当前库存</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="low-stock-products">
+                            <!-- 库存不足商品将通过JavaScript填充 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../static/js/admin.js"></script>
+</body>
+</html>

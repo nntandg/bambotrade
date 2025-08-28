@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卡密商城 - 自动发货卡密平台</title>
+    <meta name="description" content="专业的卡密自动发货平台，支持微信、USDT支付，快速发货">
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="icon" href="static/images/logo.png" type="image/png">
+</head>
+<body>
+<!-- 顶部导航栏 -->
+<header class="header">
+    <div class="container">
+        <div class="logo">
+            <img src="static/images/logo.png" alt="卡密商城">
+            <h1>卡密商城</h1>
+        </div>
+        <nav class="nav">
+            <ul>
+                <li><a href="index.html" class="active">首页</a></li>
+                <li><a href="#products">商品列表</a></li>
+                <li><a href="#about">关于我们</a></li>
+                <li><a href="#contact">联系我们</a></li>
+            </ul>
+        </nav>
+        <div class="user-actions">
+            <a href="order.html" class="btn btn-outline">我的订单</a>
+            <a href="admin/login.html" class="btn btn-primary">管理后台</a>
+        </div>
+    </div>
+</header>
+
+<!-- 英雄区域 -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1>专业卡密自动发货平台</h1>
+            <p>支持微信、USDT多种支付方式，付款后自动发货，安全可靠</p>
+            <div class="hero-buttons">
+                <a href="#products" class="btn btn-primary btn-large">立即购买</a>
+                <a href="#about" class="btn btn-outline btn-large">了解更多</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="static/images/product1.jpg" alt="卡密商品">
+        </div>
+    </div>
+</section>
+
+<!-- 支付方式展示 -->
+<section class="payment-methods">
+    <div class="container">
+        <h2>多种支付方式</h2>
+        <div class="payment-cards">
+            <div class="payment-card">
+                <div class="payment-icon">
+                    <img src="static/images/wechat-icon.png" alt="微信支付">
+                </div>
+                <h3>微信支付</h3>
+                <p>使用微信扫码支付，方便快捷</p>
+            </div>
+            <div class="payment-card">
+                <div class="payment-icon">
+                    <img src="static/images/usdt-icon.png" alt="USDT支付">
+                </div>
+                <h3>USDT支付</h3>
+                <p>支持TRC-20网络，安全稳定</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 商品列表 -->
+<section id="products" class="products">
+    <div class="container">
+        <h2>热门商品</h2>
+        <div class="product-grid" id="product-grid">
+            <!-- 商品将通过JavaScript动态加载 -->
+            <div class="loading">商品加载中...</div>
+        </div>
+    </div>
+</section>
+
+<!-- 关于我们 -->
+<section id="about" class="about">
+    <div class="container">
+        <div class="about-content">
+            <h2>关于我们</h2>
+            <p>卡密商城是一家专业的数字商品自动发货平台，致力于为用户提供安全、便捷的卡密购买体验。</p>
+            <p>我们支持多种支付方式，包括微信支付和USDT加密货币支付，所有商品均为自动发货，付款后立即获取卡密。</p>
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">🔒</div>
+                    <h3>安全可靠</h3>
+                    <p>采用SSL加密传输，保障交易安全</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <h3>快速发货</h3>
+                    <p>付款后自动发货，无需等待</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">💳</div>
+                    <h3>多种支付</h3>
+                    <p>支持微信、USDT等多种支付方式</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 联系我们 -->
+<section id="contact" class="contact">
+    <div class="container">
+        <h2>联系我们</h2>
+        <div class="contact-info">
+            <div class="contact-item">
+                <h3>客服微信</h3>
+                <p>扫码添加客服微信</p>
+                <img src="qr-codes/wechat.png" alt="客服微信" class="contact-qr">
+            </div>
+            <div class="contact-item">
+                <h3>Telegram</h3>
+                <p>@cardsupport</p>
+                <a href="https://t.me/cardsupport" target="_blank" class="btn btn-outline">联系客服</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 页脚 -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="static/images/logo.png" alt="卡密商城">
+                <h3>卡密商城</h3>
+            </div>
+            <div class="footer-links">
+                <h4>快速链接</h4>
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="#products">商品列表</a></li>
+                    <li><a href="order.html">我的订单</a></li>
+                    <li><a href="admin/login.html">管理后台</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>帮助中心</h4>
+                <ul>
+                    <li><a href="#">购买指南</a></li>
+                    <li><a href="#">支付问题</a></li>
+                    <li><a href="#">发货说明</a></li>
+                    <li><a href="#">联系客服</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>联系方式</h4>
+                <p>客服微信: <span>扫码添加</span></p>
+                <p>Telegram: <span>@cardsupport</span></p>
+                <p>邮箱: <span>support@cardshop.com</span></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 卡密商城. 保留所有权利.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- JavaScript -->
+<script src="static/js/index.js"></script>
+</body>
+</html>

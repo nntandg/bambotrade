@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>结算 - 卡密商城</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="icon" href="static/images/logo.png" type="image/png">
+</head>
+<body>
+<!-- 顶部导航栏 -->
+<header class="header">
+    <div class="container">
+        <div class="logo">
+            <img src="static/images/logo.png" alt="卡密商城">
+            <h1>卡密商城</h1>
+        </div>
+        <nav class="nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="#products">商品列表</a></li>
+                <li><a href="#about">关于我们</a></li>
+                <li><a href="#contact">联系我们</a></li>
+            </ul>
+        </nav>
+        <div class="user-actions">
+            <a href="order.html" class="btn btn-outline">我的订单</a>
+            <a href="admin/login.html" class="btn btn-primary">管理后台</a>
+        </div>
+    </div>
+</header>
+
+<!-- 结算页面 -->
+<section class="checkout">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">首页</a> &gt; <a href="index.html#products">商品列表</a> &gt; <a href="product.html">商品详情</a> &gt; <span>结算</span>
+        </div>
+
+        <h1>确认订单</h1>
+
+        <div class="checkout-container">
+            <div class="checkout-left">
+                <div class="checkout-section">
+                    <h2>商品信息</h2>
+                    <div class="product-info" id="product-info">
+                        <!-- 商品信息将通过JavaScript填充 -->
+                    </div>
+                </div>
+
+                <div class="checkout-section">
+                    <h2>选择支付方式</h2>
+                    <div class="payment-methods">
+                        <label class="payment-method">
+                            <input type="radio" name="paymentMethod" value="wechat" checked>
+                            <div class="payment-method-content">
+                                <img src="static/images/wechat-icon.png" alt="微信支付">
+                                <div>
+                                    <h3>微信支付</h3>
+                                    <p>使用微信扫码支付</p>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label class="payment-method">
+                            <input type="radio" name="paymentMethod" value="usdt">
+                            <div class="payment-method-content">
+                                <img src="static/images/usdt-icon.png" alt="USDT支付">
+                                <div>
+                                    <h3>USDT支付</h3>
+                                    <p>支持TRC-20网络</p>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="checkout-section">
+                    <h2>订单备注</h2>
+                    <textarea id="order-note" placeholder="如有特殊要求，请在此备注..."></textarea>
+                </div>
+            </div>
+
+            <div class="checkout-right">
+                <div class="order-summary">
+                    <h2>订单摘要</h2>
+                    <div class="summary-row">
+                        <span>商品价格:</span>
+                        <span id="summary-price">¥0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>优惠:</span>
+                        <span id="summary-discount">-¥0.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>应付金额:</span>
+                        <span id="summary-total">¥0.00</span>
+                    </div>
+
+                    <div class="qr-code-container" id="qr-code-container">
+                        <h3>扫码支付</h3>
+                        <div class="qr-code">
+                            <img id="wechat-qr" src="qr-codes/wechat.png" alt="微信收款码" class="active">
+                            <img id="usdt-qr" src="qr-codes/usdt.png" alt="USDT收款码">
+                        </div>
+                        <p class="payment-notice">
+                            请扫码支付 <span id="payment-amount">¥0.00</span><br>
+                            支付后请联系管理员确认收款
+                        </p>
+                    </div>
+
+                    <button id="submit-order" class="btn btn-primary btn-large">提交订单</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 页脚 -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="static/images/logo.png" alt="卡密商城">
+                <h3>卡密商城</h3>
+            </div>
+            <div class="footer-links">
+                <h4>快速链接</h4>
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="#products">商品列表</a></li>
+                    <li><a href="order.html">我的订单</a></li>
+                    <li><a href="admin/login.html">管理后台</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>帮助中心</h4>
+                <ul>
+                    <li><a href="#">购买指南</a></li>
+                    <li><a href="#">支付问题</a></li>
+                    <li><a href="#">发货说明</a></li>
+                    <li><a href="#">联系客服</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>联系方式</h4>
+                <p>客服微信: <span>扫码添加</span></p>
+                <p>Telegram: <span>@cardsupport</span></p>
+                <p>邮箱: <span>support@cardshop.com</span></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 卡密商城. 保留所有权利.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- JavaScript -->
+<script src="static/js/checkout.js"></script>
+</body>
+</html>

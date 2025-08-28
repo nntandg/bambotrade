@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品详情 - 卡密商城</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="icon" href="static/images/logo.png" type="image/png">
+</head>
+<body>
+<!-- 顶部导航栏 -->
+<header class="header">
+    <div class="container">
+        <div class="logo">
+            <img src="static/images/logo.png" alt="卡密商城">
+            <h1>卡密商城</h1>
+        </div>
+        <nav class="nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="#products">商品列表</a></li>
+                <li><a href="#about">关于我们</a></li>
+                <li><a href="#contact">联系我们</a></li>
+            </ul>
+        </nav>
+        <div class="user-actions">
+            <a href="order.html" class="btn btn-outline">我的订单</a>
+            <a href="admin/login.html" class="btn btn-primary">管理后台</a>
+        </div>
+    </div>
+</header>
+
+<!-- 商品详情 -->
+<section class="product-detail">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">首页</a> &gt; <a href="index.html#products">商品列表</a> &gt; <span id="breadcrumb-product">商品详情</span>
+        </div>
+
+        <div class="product-container">
+            <div class="product-images">
+                <div class="main-image">
+                    <img id="main-product-image" src="static/images/product1.jpg" alt="商品图片">
+                </div>
+            </div>
+
+            <div class="product-info">
+                <h1 id="product-name">商品名称</h1>
+                <div class="product-price">
+                    <span class="price">¥<span id="product-price">0.00</span></span>
+                    <span class="stock">库存: <span id="product-stock">0</span></span>
+                </div>
+
+                <div class="product-description">
+                    <h3>商品描述</h3>
+                    <p id="product-description">商品描述内容...</p>
+                </div>
+
+                <div class="product-features">
+                    <h3>商品特点</h3>
+                    <ul id="product-features">
+                        <li>特点1</li>
+                        <li>特点2</li>
+                        <li>特点3</li>
+                    </ul>
+                </div>
+
+                <div class="product-actions">
+                    <a href="checkout.html?productId=1" class="btn btn-primary btn-large">立即购买</a>
+                    <button class="btn btn-outline btn-large">加入收藏</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-tabs">
+            <div class="tabs-header">
+                <button class="tab-btn active" data-tab="details">商品详情</button>
+                <button class="tab-btn" data-tab="instructions">使用说明</button>
+                <button class="tab-btn" data-tab="faq">常见问题</button>
+            </div>
+
+            <div class="tabs-content">
+                <div class="tab-pane active" id="details">
+                    <h3>商品详情</h3>
+                    <p id="details-content">商品详细内容...</p>
+                </div>
+
+                <div class="tab-pane" id="instructions">
+                    <h3>使用说明</h3>
+                    <ol>
+                        <li>购买后您将收到一串卡密</li>
+                        <li>在对应平台兑换页面输入卡密</li>
+                        <li>确认兑换成功即可使用</li>
+                    </ol>
+                </div>
+
+                <div class="tab-pane" id="faq">
+                    <h3>常见问题</h3>
+                    <div class="faq-item">
+                        <h4>Q: 卡密什么时候发货？</h4>
+                        <p>A: 付款后系统会自动发货，通常在1分钟内完成。</p>
+                    </div>
+                    <div class="faq-item">
+                        <h4>Q: 卡密可以使用多久？</h4>
+                        <p>A: 根据商品类型不同，使用期限也不同，请在有效期内使用。</p>
+                    </div>
+                    <div class="faq-item">
+                        <h4>Q: 卡密无法使用怎么办？</h4>
+                        <p>A: 请联系客服，提供订单号和卡密，我们会为您处理。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 相关商品 -->
+<section class="related-products">
+    <div class="container">
+        <h2>相关商品</h2>
+        <div class="product-grid" id="related-products-grid">
+            <!-- 相关商品将通过JavaScript动态加载 -->
+        </div>
+    </div>
+</section>
+
+<!-- 页脚 -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="static/images/logo.png" alt="卡密商城">
+                <h3>卡密商城</h3>
+            </div>
+            <div class="footer-links">
+                <h4>快速链接</h4>
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="#products">商品列表</a></li>
+                    <li><a href="order.html">我的订单</a></li>
+                    <li><a href="admin/login.html">管理后台</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>帮助中心</h4>
+                <ul>
+                    <li><a href="#">购买指南</a></li>
+                    <li><a href="#">支付问题</a></li>
+                    <li><a href="#">发货说明</a></li>
+                    <li><a href="#">联系客服</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>联系方式</h4>
+                <p>客服微信: <span>扫码添加</span></p>
+                <p>Telegram: <span>@cardsupport</span></p>
+                <p>邮箱: <span>support@cardshop.com</span></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 卡密商城. 保留所有权利.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- JavaScript -->
+<script src="static/js/product.js"></script>
+</body>
+</html>

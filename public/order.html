@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单详情 - 卡密商城</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="icon" href="static/images/logo.png" type="image/png">
+</head>
+<body>
+<!-- 顶部导航栏 -->
+<header class="header">
+    <div class="container">
+        <div class="logo">
+            <img src="static/images/logo.png" alt="卡密商城">
+            <h1>卡密商城</h1>
+        </div>
+        <nav class="nav">
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="#products">商品列表</a></li>
+                <li><a href="#about">关于我们</a></li>
+                <li><a href="#contact">联系我们</a></li>
+            </ul>
+        </nav>
+        <div class="user-actions">
+            <a href="order.html" class="btn btn-outline">我的订单</a>
+            <a href="admin/login.html" class="btn btn-primary">管理后台</a>
+        </div>
+    </div>
+</header>
+
+<!-- 订单详情 -->
+<section class="order-detail">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">首页</a> &gt; <a href="order.html">我的订单</a> &gt; <span>订单详情</span>
+        </div>
+
+        <h1>订单详情</h1>
+
+        <div class="order-container">
+            <div class="order-left">
+                <div class="order-section">
+                    <h2>订单信息</h2>
+                    <div class="order-info">
+                        <div class="info-row">
+                            <span>订单号:</span>
+                            <span id="order-id" class="order-number">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span>下单时间:</span>
+                            <span id="order-time">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span>支付方式:</span>
+                            <span id="payment-method">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span>订单状态:</span>
+                            <span id="order-status" class="status">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-section">
+                    <h2>商品信息</h2>
+                    <div class="product-info" id="product-info">
+                        <!-- 商品信息将通过JavaScript填充 -->
+                    </div>
+                </div>
+
+                <div class="order-section">
+                    <h2>支付信息</h2>
+                    <div class="payment-info">
+                        <div class="info-row">
+                            <span>商品价格:</span>
+                            <span id="product-price">¥0.00</span>
+                        </div>
+                        <div class="info-row">
+                            <span>优惠金额:</span>
+                            <span id="discount-amount">-¥0.00</span>
+                        </div>
+                        <div class="info-row total">
+                            <span>实付金额:</span>
+                            <span id="paid-amount">¥0.00</span>
+                        </div>
+                        <div class="info-row" id="transaction-row" style="display: none;">
+                            <span>交易号:</span>
+                            <span id="transaction-id">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-right">
+                <div class="order-actions">
+                    <h2>订单操作</h2>
+
+                    <div id="payment-pending" class="action-panel">
+                        <h3>待支付</h3>
+                        <p>请使用以下方式完成支付：</p>
+                        <div class="payment-methods">
+                            <div class="payment-method">
+                                <img src="static/images/wechat-icon.png" alt="微信支付">
+                                <span>微信支付</span>
+                            </div>
+                            <div class="payment-method">
+                                <img src="static/images/usdt-icon.png" alt="USDT支付">
+                                <span>USDT支付</span>
+                            </div>
+                        </div>
+                        <div class="qr-codes">
+                            <img src="qr-codes/wechat.png" alt="微信收款码">
+                            <img src="qr-codes/usdt.png" alt="USDT收款码">
+                        </div>
+                        <p class="notice">支付后请联系管理员确认收款</p>
+                        <button id="refresh-status" class="btn btn-outline">刷新状态</button>
+                    </div>
+
+                    <div id="payment-confirmed" class="action-panel" style="display: none;">
+                        <h3>已确认收款</h3>
+                        <p>管理员已确认您的付款，正在准备发货...</p>
+                        <button id="refresh-status" class="btn btn-outline">刷新状态</button>
+                    </div>
+
+                    <div id="order-completed" class="action-panel" style="display: none;">
+                        <h3>订单已完成</h3>
+                        <p>您的卡密已生成，请妥善保管：</p>
+                        <div class="card-key-container">
+                            <div class="card-key" id="card-key">-</div>
+                            <button id="copy-key" class="btn btn-outline">复制卡密</button>
+                        </div>
+                        <p class="notice">卡密泄露可能导致被盗用，请勿分享给他人</p>
+                        <a href="index.html" class="btn btn-primary">继续购物</a>
+                    </div>
+
+                    <div id="order-cancelled" class="action-panel" style="display: none;">
+                        <h3>订单已取消</h3>
+                        <p>该订单已被取消，如有疑问请联系客服。</p>
+                        <a href="index.html" class="btn btn-primary">继续购物</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 页脚 -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="static/images/logo.png" alt="卡密商城">
+                <h3>卡密商城</h3>
+            </div>
+            <div class="footer-links">
+                <h4>快速链接</h4>
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="#products">商品列表</a></li>
+                    <li><a href="order.html">我的订单</a></li>
+                    <li><a href="admin/login.html">管理后台</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>帮助中心</h4>
+                <ul>
+                    <li><a href="#">购买指南</a></li>
+                    <li><a href="#">支付问题</a></li>
+                    <li><a href="#">发货说明</a></li>
+                    <li><a href="#">联系客服</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>联系方式</h4>
+                <p>客服微信: <span>扫码添加</span></p>
+                <p>Telegram: <span>@cardsupport</span></p>
+                <p>邮箱: <span>support@cardshop.com</span></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 卡密商城. 保留所有权利.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- JavaScript -->
+<script src="static/js/order.js"></script>
+</body>
+</html>

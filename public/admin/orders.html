@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单管理 - 卡密商城</title>
+    <link rel="stylesheet" href="../static/css/admin.css">
+    <link rel="icon" href="../static/images/logo.png" type="image/png">
+</head>
+<body>
+<div class="admin-container">
+    <div class="sidebar">
+        <div class="logo">
+            <img src="../static/images/logo.png" alt="卡密商城">
+            <h2>卡密管理</h2>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="index.html">仪表盘</a></li>
+            <li><a href="products.html">商品管理</a></li>
+            <li class="active"><a href="orders.html">订单管理</a></li>
+            <li><a href="cards.html">卡密管理</a></li>
+            <li><a href="settings.html">系统设置</a></li>
+            <li><a href="#" id="logout">退出登录</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <header class="header">
+            <h1>订单管理</h1>
+            <div class="user-info">
+                <span>管理员: <span id="admin-username">admin</span></span>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="filters">
+                <select id="status-filter">
+                    <option value="">所有状态</option>
+                    <option value="PENDING_PAYMENT">待支付</option>
+                    <option value="PAID">已支付待确认</option>
+                    <option value="CONFIRMED_PAYMENT">已收款待发货</option>
+                    <option value="COMPLETED">已完成</option>
+                    <option value="CANCELLED">已取消</option>
+                </select>
+                <input type="text" id="search-input" placeholder="搜索订单号...">
+                <button id="search-btn">搜索</button>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th>订单号</th>
+                        <th>用户</th>
+                        <th>商品</th>
+                        <th>金额</th>
+                        <th>支付方式</th>
+                        <th>状态</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="orders-tbody">
+                    <!-- 订单列表将通过JavaScript填充 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination">
+                <button id="prev-page">上一页</button>
+                <span id="page-info">第 1 页，共 1 页</span>
+                <button id="next-page">下一页</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 确认收款弹窗 -->
+<div id="confirm-payment-modal" class="modal">
+    <div class="modal-content">
+        <h3>确认收款</h3>
+        <p>订单号: <span id="modal-order-id"></span></p>
+        <p>金额: <span id="modal-order-amount"></span></p>
+        <div class="form-group">
+            <label>交易号 (可选):</label>
+            <input type="text" id="transaction-id">
+        </div>
+        <div class="modal-actions">
+            <button id="confirm-payment-btn">确认收款</button>
+            <button class="cancel-btn">取消</button>
+        </div>
+    </div>
+</div>
+
+<!-- 确认发货弹窗 -->
+<div id="confirm-delivery-modal" class="modal">
+    <div class="modal-content">
+        <h3>确认发货</h3>
+        <p>订单号: <span id="modal-delivery-order-id"></span></p>
+        <p>商品: <span id="modal-delivery-product"></span></p>
+        <p>系统将自动分配一个可用卡密</p>
+        <div class="modal-actions">
+            <button id="confirm-delivery-btn">确认发货</button>
+            <button class="cancel-btn">取消</button>
+        </div>
+    </div>
+</div>
+
+<script src="../static/js/admin.js"></script>
+</body>
+</html>
