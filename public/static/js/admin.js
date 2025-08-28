@@ -50,28 +50,43 @@ function checkAdminLogin() {
     }
 }
 
+
 // 初始化登录页面
 function initLoginPage() {
     const loginForm = document.getElementById('login-form');
 
     if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
+        loginForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            // 模拟登录验证（实际应用中应发送到API）
-            if (username === 'admin' && password === 'admin123') {
-                // 保存登录令牌
-                localStorage.setItem('adminToken', 'mock-admin-token');
-                localStorage.setItem('adminUsername', username);
+            try {
+                const response = await fetch('https://api.pengbo.qzz.io/api/auth/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
 
-                // 跳转到仪表盘
-                window.location.href = 'index.html';
-            } else {
-                // 显示错误消息
-                alert('用户名或密码错误！');
+                const data = await response.json();
+
+                if (data.success) {
+                    // 保存登录令牌
+                    localStorage.setItem('adminToken', data.data.token);
+                    localStorage.setItem('adminUsername', data.data.user.username);
+
+                    // 跳转到仪表盘
+                    window.location.href = 'index.html';
+                } else {
+                    // 显示错误消息
+                    alert('用户名或密码错误！');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('登录失败，请检查网络连接');
             }
         });
     }
